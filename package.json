@@ -1,0 +1,30 @@
+{
+  "name": "cms-website-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable Next.js + Sanity starter for Fiverr CMS website gigs. Clone, restyle per template, deploy to Vercel.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "studio": "sanity dev",
+    "studio:deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "next-sanity": "^9.4.3",
+    "@sanity/image-url": "^1.0.2",
+    "@portabletext/react": "^3.1.0",
+    "sanity": "^3.52.4",
+    "@sanity/vision": "^3.52.4",
+    "styled-components": "^6.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.5.4"
+  }
+}
