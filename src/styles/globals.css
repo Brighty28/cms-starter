@@ -69,9 +69,15 @@ a.btn-outline {
 @media (max-width: 768px) {
   .two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
   .grid-3 { grid-template-columns: 1fr !important; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
   .nav-links { display: none !important; }
 }
 
 @media (min-width: 769px) and (max-width: 1000px) {
   .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 460px) {
+  .grid-4 { grid-template-columns: 1fr !important; }
 }

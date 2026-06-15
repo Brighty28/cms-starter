@@ -28,8 +28,18 @@ Fiverr's recommended image size is **1280 × 769 px**. Shoot a little larger and
 
 ## 2. Deploy both demos to Vercel
 
-You now have **two demos in one project**: the restaurant at `/` and the
-tradesperson at `/trades`. Deploying once gives you two shareable URLs.
+You now have **three demos in one project**: the restaurant at `/`, the
+tradesperson at `/trades`, and the clinic at `/clinic`. Deploying once gives you
+three shareable URLs.
+
+> **If your Vercel build fails with `No Output Directory named "dist" found`:**
+> that's a wrong **Framework Preset** — the build succeeded, Vercel just looked
+> in the wrong folder for the output. Fix it in
+> **Project → Settings → Build & Output Settings**: set **Framework Preset =
+> Next.js**, and set **Output Directory** back to its default (leave the override
+> off — Next.js uses `.next`, handled automatically). Then **Redeploy**. The repo
+> also ships a `vercel.json` (`"framework": "nextjs"`) so fresh imports get this
+> right automatically.
 
 > I can't run this deploy for you — it signs into **your** Vercel account from
 > your machine. Run these locally; it takes about two minutes.
@@ -42,10 +52,11 @@ vercel --prod          # accept the defaults — it auto-detects Next.js
 ```
 
 When it finishes you'll get a URL like `https://cms-starter-xyz.vercel.app`.
-Your two gallery demos are then:
+Your three gallery demos are then:
 
 - Restaurant: `https://<your-url>.vercel.app/`
 - Trades: `https://<your-url>.vercel.app/trades`
+- Clinic: `https://<your-url>.vercel.app/clinic`
 
 **No environment variables are needed** — both demos render from built-in
 fallback content, so they deploy green with zero Sanity setup. (When you connect
@@ -110,6 +121,13 @@ Use these as the captions / "My Portfolio" items on your gig and Fiverr profile.
   banner, contact.
 - **Caption idea:** *"Local trades template — services, reviews and free-quote
   call-to-action. The owner edits everything themselves."*
+
+### Clinic demo — "Riverside Dental & Wellness"
+- **Route:** `/clinic`
+- **Shows:** calming hero with booking CTA, trust bar, treatments grid, team
+  section, patient reviews, and an appointment booking section.
+- **Caption idea:** *"Clinic & practitioner template — treatments, team and
+  online booking. Perfect for dentists, physios, therapists and salons."*
 
 ---
 

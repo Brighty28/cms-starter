@@ -25,14 +25,15 @@ cms-starter/
 │   └── styles/globals.css    # Theme variables live here
 ```
 
-This repo ships with **two live demos**, both rendering fully with no Sanity
+This repo ships with **three live demos**, all rendering fully with no Sanity
 project connected (built-in fallback content) so you can deploy and screenshot
 immediately:
 
 - **Restaurant** — `/` — "The Copper Table" (menu-led)
 - **Tradesperson / local service** — `/trades` — "Sterling Plumbing & Heating" (services + reviews + quote CTA)
+- **Clinic / practitioner** — `/clinic` — "Riverside Dental & Wellness" (services + team + booking)
 
-One Vercel deploy gives you both gallery URLs. See
+One Vercel deploy gives you all three gallery URLs. See
 [`docs/fiverr-gallery-guide.md`](./docs/fiverr-gallery-guide.md) for the deploy +
 screenshot + gallery workflow, and [`docs/loom-60s-script.md`](./docs/loom-60s-script.md)
 for the gig video script. A ready-to-screenshot gig title card lives in
@@ -45,10 +46,10 @@ for the gig video script. A ready-to-screenshot gig title card lives in
 ```bash
 npm install
 cp .env.example .env.local      # leave values blank to use demo fallbacks
-npm run dev                      # http://localhost:3000  →  /  and  /trades
+npm run dev                      # http://localhost:3000  →  / , /trades , /clinic
 ```
 
-That's enough to see both styled demos and capture screenshots for your Fiverr gallery.
+That's enough to see all three styled demos and capture screenshots for your Fiverr gallery.
 
 ---
 
@@ -97,7 +98,7 @@ That's enough to see both styled demos and capture screenshots for your Fiverr g
 
 1. ✅ Restaurant (`/`)
 2. ✅ Tradesperson / local service (`/trades`) — services grid + reviews + quote CTA
-3. Clinic / practitioner — services + team + booking link
+3. ✅ Clinic / practitioner (`/clinic`) — services + team + booking link
 4. Portfolio / creative — image-led gallery
 5. Agency — case studies + services
 

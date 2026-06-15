@@ -286,6 +286,67 @@ export function QuoteBanner({ phone = "0161 000 0000", headline = "Need a job do
   );
 }
 
+// ---- TEAM ---------------------------------------------------------------
+// Practitioner/team grid for clinics, agencies, salons. Uses initials in a
+// coloured disc when no photo is supplied, so it looks complete with zero
+// images — perfect for demos and quick client launches.
+export function TeamSection({ items = [], eyebrow = "Meet the Team", title = "Friendly experts you can trust" }) {
+  const fallback = [
+    { _id: "1", name: "Dr. Amara Okafor", role: "Principal Dentist", bio: "BDS, 18 years' experience. Special interest in nervous and anxious patients." },
+    { _id: "2", name: "Dr. Tom Hayes", role: "Implant Surgeon", bio: "Leads our implant and restorative work, restoring smiles that last." },
+    { _id: "3", name: "Sophie Lin", role: "Lead Hygienist", bio: "Gentle, thorough hygiene care and personalised prevention plans." },
+    { _id: "4", name: "Megan Patel", role: "Practice Manager", bio: "Here to make every visit smooth, from booking to aftercare." },
+  ];
+  const data = items.length > 0 ? items : fallback;
+  const initials = (name) => name.split(" ").filter((w) => !w.includes(".")).slice(0, 2).map((w) => w[0]).join("");
+  return (
+    <section id="team" style={{ padding: "96px 0", background: "var(--surface)" }}>
+      <div className="container">
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <Eyebrow center>{eyebrow}</Eyebrow>
+          <SectionTitle>{title}</SectionTitle>
+        </div>
+        <div className="grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
+          {data.map((m) => (
+            <div
+              key={m._id}
+              style={{
+                background: "var(--bg)",
+                border: "1px solid var(--line)",
+                borderRadius: 10,
+                padding: 28,
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: 76,
+                  height: 76,
+                  borderRadius: "50%",
+                  margin: "0 auto 16px",
+                  background: "var(--accent)",
+                  color: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 26,
+                  fontWeight: 700,
+                  fontFamily: "var(--display)",
+                }}
+              >
+                {initials(m.name)}
+              </div>
+              <h3 style={{ fontSize: 19, color: "var(--primary)", marginBottom: 4, fontFamily: "var(--display)" }}>{m.name}</h3>
+              <div style={{ color: "var(--accent)", fontSize: 13, fontWeight: 600, marginBottom: 10, textTransform: "uppercase", letterSpacing: "1px" }}>{m.role}</div>
+              <p style={{ color: "var(--muted)", fontSize: 14 }}>{m.bio}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ---- FOOTER -------------------------------------------------------------
 export function Footer({ businessName }) {
   return (
