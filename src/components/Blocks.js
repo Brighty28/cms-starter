@@ -1,8 +1,12 @@
 import { PortableText } from "@portabletext/react";
 
 // ---- HERO ---------------------------------------------------------------
-export function Hero({ businessName, tagline, image, ctaLabel = "View Menu", ctaHref = "#menu" }) {
-  const bg = image || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80";
+export function Hero({ businessName, tagline, image, ctaLabel = "View Menu", ctaHref = "#menu", background, fallbackColor = "#1c1410" }) {
+  // `background` lets a template pass a full CSS background (e.g. a gradient)
+  // that never depends on an external image loading — ideal for clean,
+  // screenshot-safe hero sections. Otherwise we overlay a photo.
+  const img = image || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80";
+  const bg = background || `linear-gradient(rgba(20,14,10,0.5), rgba(20,14,10,0.62)), url("${img}")`;
   return (
     <section
       id="home"
@@ -11,7 +15,8 @@ export function Hero({ businessName, tagline, image, ctaLabel = "View Menu", cta
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `linear-gradient(rgba(20,14,10,0.5), rgba(20,14,10,0.62)), url("${bg}")`,
+        backgroundColor: fallbackColor,
+        backgroundImage: bg,
         backgroundSize: "cover",
         backgroundPosition: "center",
         color: "#fff",
@@ -122,19 +127,160 @@ export function MenuSection({ items = [] }) {
 }
 
 // ---- CONTACT ------------------------------------------------------------
-export function Contact({ phone, email, address }) {
+export function Contact({
+  phone,
+  email,
+  address,
+  eyebrow = "Visit Us",
+  title = "Book a table",
+  callLabel,
+}) {
+  const tel = phone || "0161 000 0000";
   return (
     <section id="contact" style={{ padding: "96px 0" }}>
       <div className="container" style={{ maxWidth: 640, textAlign: "center", margin: "0 auto" }}>
-        <Eyebrow center>Visit Us</Eyebrow>
-        <SectionTitle>Book a table</SectionTitle>
+        <Eyebrow center>{eyebrow}</Eyebrow>
+        <SectionTitle>{title}</SectionTitle>
         <p style={{ color: "var(--muted)", fontSize: 17, marginBottom: 32 }}>
           {address || "12 Market Street, Manchester M1 1AA"}
         </p>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-          <a href={`tel:${phone || "01610000000"}`} className="btn">Call {phone || "0161 000 0000"}</a>
+          <a href={`tel:${tel.replace(/\s+/g, "")}`} className="btn">{callLabel || `Call ${tel}`}</a>
           <a href={`mailto:${email || "hello@example.com"}`} className="btn btn-outline">Email Us</a>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// ---- SERVICES GRID (trades / clinic / agency) ---------------------------
+// Reads the same `services` shape the CMS provides. Swap MenuSection for this
+// on any service-business template — same engine, different switch.
+export function ServicesSection({ items = [], eyebrow = "What We Do", title = "Our Services" }) {
+  const fallback = [
+    { _id: "1", icon: "🔧", name: "Boiler Installation & Repair", description: "Gas Safe registered installation, servicing and fast breakdown repair for all major boiler brands." },
+    { _id: "2", icon: "🚿", name: "Bathroom Fitting", description: "Full bathroom design and fit-out, from a simple refresh to a complete renovation." },
+    { _id: "3", icon: "🚨", name: "24/7 Emergency Plumbing", description: "Burst pipes, leaks and blockages handled fast — day or night, every day of the year." },
+    { _id: "4", icon: "🔥", name: "Central Heating", description: "System upgrades, radiator installs, smart thermostats and full central heating power-flushes." },
+    { _id: "5", icon: "💧", name: "Leak Detection & Repair", description: "Non-invasive leak tracing that finds the problem first time and protects your home." },
+    { _id: "6", icon: "🛠️", name: "General Plumbing", description: "Taps, toilets, showers and everything in between — done right, tidied up, guaranteed." },
+  ];
+  const data = items.length > 0 ? items : fallback;
+  return (
+    <section id="services" style={{ padding: "96px 0", background: "var(--surface)" }}>
+      <div className="container">
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <Eyebrow center>{eyebrow}</Eyebrow>
+          <SectionTitle>{title}</SectionTitle>
+        </div>
+        <div className="grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {data.map((s) => (
+            <div
+              key={s._id}
+              style={{
+                background: "var(--bg)",
+                border: "1px solid var(--line)",
+                borderRadius: 10,
+                padding: 30,
+              }}
+            >
+              <div style={{ fontSize: 34, marginBottom: 16, lineHeight: 1 }}>{s.icon || "✔"}</div>
+              <h3 style={{ fontSize: 22, color: "var(--primary)", marginBottom: 10, fontFamily: "var(--display)" }}>{s.name}</h3>
+              <p style={{ color: "var(--muted)", fontSize: 15 }}>{s.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---- TRUST BAR ----------------------------------------------------------
+export function TrustBar({ items = ["Gas Safe Registered", "24/7 Emergency Call-Out", "12-Month Guarantee", "Free No-Obligation Quotes"] }) {
+  return (
+    <div style={{ background: "var(--primary)", color: "#fff" }}>
+      <div
+        className="container trust-bar"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "14px 40px",
+          padding: "18px 24px",
+          fontSize: 14,
+          fontWeight: 600,
+          letterSpacing: "0.3px",
+        }}
+      >
+        {items.map((t) => (
+          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <span style={{ color: "var(--accent)" }}>✔</span> {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ---- REVIEWS ------------------------------------------------------------
+export function Reviews({ items = [], eyebrow = "Customer Reviews", title = "Trusted by your neighbours" }) {
+  const fallback = [
+    { _id: "1", quote: "Came out within the hour for a burst pipe on a Sunday. Calm, tidy and fairly priced — genuine lifesavers.", author: "Sarah M., Didsbury" },
+    { _id: "2", quote: "New boiler fitted in a day with zero mess. Explained everything clearly and the price didn't budge from the quote.", author: "James & Priya, Chorlton" },
+    { _id: "3", quote: "Re-did our whole bathroom and it's better than we imagined. Reliable, polite and properly skilled.", author: "Dave R., Stockport" },
+  ];
+  const data = items.length > 0 ? items : fallback;
+  return (
+    <section id="reviews" style={{ padding: "96px 0" }}>
+      <div className="container">
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <Eyebrow center>{eyebrow}</Eyebrow>
+          <SectionTitle>{title}</SectionTitle>
+        </div>
+        <div className="grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {data.map((r) => (
+            <figure
+              key={r._id}
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: 10,
+                padding: 30,
+                margin: 0,
+              }}
+            >
+              <div style={{ color: "var(--accent)", fontSize: 18, letterSpacing: 2, marginBottom: 14 }}>★★★★★</div>
+              <blockquote style={{ margin: 0, color: "var(--ink)", fontSize: 16, lineHeight: 1.6 }}>“{r.quote}”</blockquote>
+              <figcaption style={{ marginTop: 18, color: "var(--muted)", fontSize: 14, fontWeight: 600 }}>{r.author}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---- QUOTE BANNER -------------------------------------------------------
+export function QuoteBanner({ phone = "0161 000 0000", headline = "Need a job doing properly?", sub = "Get a free, no-obligation quote today — most callbacks within the hour." }) {
+  return (
+    <section style={{ background: "var(--accent)", color: "var(--primary)", padding: "64px 0" }}>
+      <div className="container" style={{ textAlign: "center", maxWidth: 720 }}>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "var(--display)", marginBottom: 12 }}>{headline}</h2>
+        <p style={{ fontSize: 17, marginBottom: 28, opacity: 0.85 }}>{sub}</p>
+        <a
+          href={`tel:${phone.replace(/\s+/g, "")}`}
+          style={{
+            display: "inline-block",
+            background: "var(--primary)",
+            color: "#fff",
+            padding: "16px 38px",
+            borderRadius: 4,
+            fontWeight: 700,
+            fontSize: 16,
+          }}
+        >
+          Call {phone}
+        </a>
       </div>
     </section>
   );

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiverr Gig Launch Pack — Sanity + Next.js Websites</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #16161f;
+    --card2: #1c1c28;
+    --border: rgba(255,255,255,0.07);
+    --border-lit: rgba(29,191,115,0.3);
+    --fiverr: #1dbf73;
+    --fiverr-dark: #19a463;
+    --sanity: #f03e2f;
+    --next: #ffffff;
+    --vercel: #888;
+    --gold: #ffc857;
+    --muted: #5a5a6e;
+    --muted2: #8888a0;
+    --text: #c5c5d5;
+    --white: #f0f0f8;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* HERO */
+  .hero {
+    background:
+      radial-gradient(ellipse at top right, rgba(29,191,115,0.08), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(240,62,47,0.05), transparent 55%),
+      var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 0 44px;
+  }
+
+  .badge-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tech-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .tech-badge.sanity { color: var(--sanity); border-color: rgba(240,62,47,0.3); }
+  .tech-badge.next { color: var(--white); }
+  .tech-badge.vercel { color: var(--muted2); }
+  .tech-badge.fiverr { color: var(--fiverr); border-color: var(--border-lit); }
+
+  .hero h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(36px, 6vw, 60px);
+    font-weight: 800;
+    line-height: 1.02;
+    color: var(--white);
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--fiverr); }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--muted2);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 0; overflow-x: auto; padding: 0 24px;
+  }
+  .nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted2);
+    padding: 15px 18px;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav a:hover { color: var(--text); border-bottom-color: var(--border); }
+
+  section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+
+  .sec-head { margin-bottom: 32px; }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 3px;
+    color: var(--fiverr); margin-bottom: 10px;
+  }
+  .sec-head h2 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 30px; font-weight: 700;
+    color: var(--white); letter-spacing: -0.5px;
+    line-height: 1.1; margin-bottom: 8px;
+  }
+  .sec-head p { color: var(--muted2); font-size: 14px; max-width: 640px; }
+
+  /* COPY BLOCK */
+  .copy-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .copy-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px;
+    background: var(--card2);
+    border-bottom: 1px solid var(--border);
+  }
+  .copy-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted2);
+  }
+  .copy-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    background: rgba(29,191,115,0.12);
+    color: var(--fiverr);
+    border: 1px solid var(--border-lit);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--fiverr); color: #0a0a0f; }
+  .copy-btn.copied { background: var(--fiverr); color: #0a0a0f; }
+  .copy-body {
+    padding: 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .copy-body strong { color: var(--white); }
+
+  .title-options { display: flex; flex-direction: column; gap: 10px; }
+  .title-opt {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .title-opt:hover { border-color: var(--border-lit); }
+  .title-opt .t-text { font-size: 14px; color: var(--white); font-weight: 500; }
+  .title-opt .t-note { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  .title-opt.best { border-color: var(--border-lit); background: rgba(29,191,115,0.04); }
+  .title-opt.best .t-note { color: var(--fiverr); }
+
+  /* PACKAGE TABLE */
+  .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pkg {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+  }
+  .pkg.featured { border-color: var(--border-lit); }
+  .pkg.featured::before {
+    content: 'MOST POPULAR';
+    position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    background: var(--fiverr); color: #0a0a0f;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 1px; font-weight: 700;
+    padding: 3px 12px; border-radius: 100px;
+  }
+  .pkg-name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 18px; font-weight: 700; color: var(--white);
+    margin-bottom: 4px;
+  }
+  .pkg-tag { font-size: 11px; color: var(--muted2); margin-bottom: 16px; min-height: 30px; }
+  .pkg-price {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 36px; font-weight: 800; color: var(--fiverr);
+    line-height: 1; margin-bottom: 4px;
+  }
+  .pkg-price small { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .pkg-delivery {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--gold);
+    margin-bottom: 18px; padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pkg-feat { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .pkg-feat li {
+    font-size: 12px; color: var(--text);
+    padding-left: 22px; position: relative; line-height: 1.5;
+  }
+  .pkg-feat li::before {
+    content: '✓'; position: absolute; left: 0;
+    color: var(--fiverr); font-weight: 700;
+  }
+  .pkg-feat li.no { color: var(--muted); }
+  .pkg-feat li.no::before { content: '×'; color: var(--muted); }
+
+  /* PROFIT NOTE */
+  .profit-note {
+    background: linear-gradient(135deg, rgba(29,191,115,0.06), rgba(255,200,87,0.04));
+    border: 1px solid var(--border-lit);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .pn-item { text-align: center; }
+  .pn-val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 24px; font-weight: 800; color: var(--white); line-height: 1;
+  }
+  .pn-val.green { color: var(--fiverr); }
+  .pn-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted2); margin-top: 6px;
+  }
+
+  /* TEMPLATE LIBRARY */
+  .tpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .tpl-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .tpl-card:hover { border-color: var(--border-lit); transform: translateY(-2px); }
+  .tpl-thumb {
+    height: 110px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 1px;
+    position: relative; overflow: hidden;
+  }
+  .tpl-thumb::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .tpl-body { padding: 14px 16px; }
+  .tpl-name { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+  .tpl-niche { font-size: 11px; color: var(--muted2); line-height: 1.5; }
+
+  /* FAQ */
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 16px 18px;
+    font-weight: 600; font-size: 13px; color: var(--white);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-q::after { content: '+'; color: var(--fiverr); font-size: 18px; }
+  .faq-item.open .faq-q::after { content: '−'; }
+  .faq-a {
+    padding: 0 18px;
+    max-height: 0; overflow: hidden;
+    font-size: 13px; color: var(--text); line-height: 1.7;
+    transition: all 0.25s ease;
+  }
+  .faq-item.open .faq-a { padding: 0 18px 16px; max-height: 300px; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .step-n {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(29,191,115,0.1);
+    border: 1px solid var(--border-lit);
+    color: var(--fiverr);
+    font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-c h4 { font-size: 14px; color: var(--white); font-weight: 700; margin-bottom: 4px; }
+  .step-c p { font-size: 12px; color: var(--text); line-height: 1.6; }
+  .step-c code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #06060a; color: var(--fiverr);
+    padding: 2px 6px; border-radius: 4px; font-size: 11px;
+  }
+
+  /* PRO TIPS */
+  .tips { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .tip h4 { font-size: 13px; color: var(--white); margin-bottom: 5px; font-weight: 700; }
+  .tip p { font-size: 12px; color: var(--text); line-height: 1.6; }
+
+  footer { padding: 40px 0; text-align: center; }
+  footer p { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); }
+
+  @media (max-width: 768px) {
+    .pkg-grid { grid-template-columns: 1fr; }
+    .profit-note { grid-template-columns: 1fr 1fr; }
+    .tips { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="badge-row">
+      <span class="tech-badge sanity">◆ Sanity.io</span>
+      <span class="tech-badge next">▲ Next.js</span>
+      <span class="tech-badge vercel">▲ Vercel</span>
+      <span class="tech-badge fiverr">● Fiverr Ready</span>
+    </div>
+    <h1>Your <span>Fiverr</span> Gig<br>Launch Pack</h1>
+    <p>A complete, copy-paste-ready setup for selling modern CMS-backed websites at volume. Gig titles, three-tier packages, full descriptions, your template library plan, FAQ, and a step-by-step launch checklist — all built around your Sanity + Next.js + Vercel stack.</p>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="#title">Gig Title</a>
+  <a href="#packages">Packages</a>
+  <a href="#description">Description</a>
+  <a href="#templates">Template Library</a>
+  <a href="#addons">Add-Ons</a>
+  <a href="#faq">FAQ</a>
+  <a href="#launch">Launch Steps</a>
+  <a href="#tips">Pro Tips</a>
+</nav>
+
+<!-- GIG TITLE -->
+<section id="title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01 — GIG TITLE</div>
+      <h2>Your Gig Title</h2>
+      <p>Fiverr titles must start with "I will". Lead with the buyer's outcome, not your tech. Most buyers don't know what Sanity is — they know they want a fast, editable website. Keep tech as a credibility signal, not the headline.</p>
+    </div>
+    <div class="title-options">
+      <div class="title-opt best">
+        <span class="t-text">I will design a modern responsive website with an easy to edit CMS</span>
+        <span class="t-note">★ LEAD WITH THIS</span>
+      </div>
+      <div class="title-opt">
+        <span class="t-text">I will build a fast Next.js business website with a content manager</span>
+        <span class="t-note">tech-aware buyers</span>
+      </div>
+      <div class="title-opt">
+        <span class="t-text">I will create a professional website you can update yourself, no code</span>
+        <span class="t-note">non-technical buyers</span>
+      </div>
+      <div class="title-opt">
+        <span class="t-text">I will develop a blazing fast website with Sanity CMS and Next.js</span>
+        <span class="t-note">developer clients</span>
+      </div>
+    </div>
+    <div class="profit-note" style="grid-template-columns: 1fr;">
+      <div style="text-align:left;">
+        <div class="pn-label" style="margin-top:0;">WHY THE TOP ONE WINS</div>
+        <p style="font-size:12px; color:var(--text); margin-top:8px; line-height:1.7;">"Easy to edit CMS" is your differentiator vs cheap static-HTML sellers, and "modern responsive" matches what buyers actually type into Fiverr search. It signals the benefit (you control your own content) without naming a CMS they've never heard of. Save "Sanity" and "Next.js" for the description and tags, where they boost search relevance for the buyers who do know them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02 — PRICING PACKAGES</div>
+      <h2>Three-Tier Packages</h2>
+      <p>Fiverr's three-column structure is a psychological funnel — most buyers pick the middle. Price so the middle tier is the obvious choice, and use delivery time + revisions as the upgrade levers. These hit your £150–400 volume target after Fiverr's 20% cut.</p>
+    </div>
+    <div class="pkg-grid">
+      <div class="pkg">
+        <div class="pkg-name">Starter</div>
+        <div class="pkg-tag">One-page site for a simple presence</div>
+        <div class="pkg-price">£160</div>
+        <div class="pkg-delivery">⏱ 7 day delivery · 1 revision</div>
+        <ul class="pkg-feat">
+          <li>1-page responsive website</li>
+          <li>1 starter template of your choice</li>
+          <li>Sanity CMS — edit your own text & images</li>
+          <li>Mobile + tablet optimised</li>
+          <li>Contact form</li>
+          <li>Deployed live on Vercel</li>
+          <li class="no">Multi-page</li>
+          <li class="no">Blog / SEO setup</li>
+        </ul>
+      </div>
+      <div class="pkg featured">
+        <div class="pkg-name">Professional</div>
+        <div class="pkg-tag">Multi-page site for a real business</div>
+        <div class="pkg-price">£320</div>
+        <div class="pkg-delivery">⏱ 9 day delivery · 2 revisions</div>
+        <ul class="pkg-feat">
+          <li>Up to 5 pages</li>
+          <li>Choice of any starter template</li>
+          <li>Full Sanity CMS — all content editable</li>
+          <li>Mobile + tablet optimised</li>
+          <li>Contact form + Google Maps</li>
+          <li>Basic on-page SEO setup</li>
+          <li>Blog / news section</li>
+          <li>Deployed live on Vercel + handover guide</li>
+        </ul>
+      </div>
+      <div class="pkg">
+        <div class="pkg-name">Premium</div>
+        <div class="pkg-tag">Polished site with extras & support</div>
+        <div class="pkg-price">£480</div>
+        <div class="pkg-delivery">⏱ 12 day delivery · 3 revisions</div>
+        <ul class="pkg-feat">
+          <li>Up to 8 pages</li>
+          <li>Any template + custom colour/brand theme</li>
+          <li>Full Sanity CMS with custom content types</li>
+          <li>Advanced SEO + performance tuning</li>
+          <li>Blog + newsletter signup integration</li>
+          <li>1 plugin/integration of choice</li>
+          <li>14 days post-delivery support</li>
+          <li>Loom video walkthrough of your CMS</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="profit-note">
+      <div class="pn-item">
+        <div class="pn-val green">£320</div>
+        <div class="pn-label">Mid-tier price</div>
+      </div>
+      <div class="pn-item">
+        <div class="pn-val">−£64</div>
+        <div class="pn-label">Fiverr 20% fee</div>
+      </div>
+      <div class="pn-item">
+        <div class="pn-val">£256</div>
+        <div class="pn-label">You keep</div>
+      </div>
+      <div class="pn-item">
+        <div class="pn-val green">£2,048</div>
+        <div class="pn-label">8 sales/mo net</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--muted2); margin-top:14px; line-height:1.7;"><strong style="color:var(--white);">Note on launch pricing:</strong> For your first 5–10 orders, drop each tier by ~30% (e.g. £110 / £220 / £340) to win reviews fast. Fiverr's algorithm rewards early traction heavily. Once you hit 10 reviews at 4.8★+, raise to the prices above. Reviews are worth more than margin in month one.</p>
+  </div>
+</section>
+
+<!-- DESCRIPTION -->
+<section id="description">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03 — GIG DESCRIPTION</div>
+      <h2>Your Gig Description</h2>
+      <p>Copy this straight into Fiverr. It's structured for skim-readers: outcome first, proof second, process third, then a clear call to action. Edit the bracketed bits.</p>
+    </div>
+    <div class="copy-block">
+      <div class="copy-head">
+        <span class="copy-label">Full Gig Description — ready to paste</span>
+        <button class="copy-btn" onclick="copyText(this, 'desc')">⧉ Copy</button>
+      </div>
+      <div class="copy-body" id="desc">Looking for a website that looks professional AND that you can actually update yourself — without paying a developer every time you change a price or add a photo? That's exactly what I build.
+
+I'm a senior developer with 20+ years of experience. I create modern, fast-loading websites with a built-in content manager (CMS), so you stay in full control of your content after delivery.
+
+★ WHAT YOU GET
+• A clean, modern, fully responsive website (looks great on every device)
+• An easy-to-use CMS — change text, images, and pages yourself with no code
+• Lightning-fast performance (built on Next.js — the same tech used by major brands)
+• Hosted live on Vercel with a free SSL certificate
+• A friendly handover so you know exactly how to manage your site
+
+★ CHOOSE FROM MY STARTER TEMPLATES
+Pick from a growing library of professionally designed templates — for restaurants, tradespeople, clinics, portfolios, agencies, and more. I'll tailor it to your brand, colours, and content.
+
+★ WHY WORK WITH ME
+• 20+ years of real engineering experience — not a drag-and-drop hobbyist
+• Sites built properly: fast, secure, SEO-friendly, and easy to maintain
+• Clear communication and on-time delivery
+• You own everything — full code and CMS access handed over
+
+★ HOW IT WORKS
+1. Message me before ordering so I can recommend the right package
+2. You pick a template + send me your content and branding
+3. I build, deploy, and walk you through managing it yourself
+
+Ready for a website that works as hard as you do? Message me and let's get started.</div>
+    </div>
+
+    <div class="copy-block">
+      <div class="copy-head">
+        <span class="copy-label">Search Tags (Fiverr allows 5)</span>
+        <button class="copy-btn" onclick="copyText(this, 'tags')">⧉ Copy</button>
+      </div>
+      <div class="copy-body" id="tags">website design · cms website · nextjs website · responsive website · business website</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPLATE LIBRARY -->
+<section id="templates">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">04 — YOUR TEMPLATE LIBRARY</div>
+      <h2>Build These Starter Templates First</h2>
+      <p>Your edge is reusability. Build each of these ONCE as a Sanity + Next.js starter, then clone-and-customise per order. This is what turns a 30-hour build into a 6-hour build. Start with the top 3 — they cover the highest-demand, lowest-complexity niches.</p>
+    </div>
+    <div class="tpl-grid">
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#1a3a2e,#0d2920);color:#5eead4;">RESTAURANT</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Restaurant / Café</div>
+          <div class="tpl-niche">Menu, gallery, hours, booking link. Huge demand, simple structure. Build first.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#2a2140,#1a1428);color:#c4b5fd;">TRADES</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Tradesperson / Local Service</div>
+          <div class="tpl-niche">Plumbers, electricians, builders. Services, reviews, quote form. High-paying buyers.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#3a2420,#281610);color:#fca5a5;">CLINIC</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Clinic / Practitioner</div>
+          <div class="tpl-niche">Dentists, physio, beauty, therapists. Services, team, online booking. Repeat demand.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#1e2a3a,#101a28);color:#93c5fd;">PORTFOLIO</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Portfolio / Creative</div>
+          <div class="tpl-niche">Photographers, designers, artists. Image-led, CMS gallery. Quick to build.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#2a2a1a,#1a1a10);color:#fde047;">AGENCY</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Agency / Consultancy</div>
+          <div class="tpl-niche">Services, case studies, team, contact. Higher-value clients, premium tier.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#3a1e30,#281020);color:#f9a8d4;">EVENTS</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Event / Wedding</div>
+          <div class="tpl-niche">Single-page, date, schedule, RSVP. Perfect Starter-tier seller.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#1a3a3a,#102828);color:#5eead4;">REALESTATE</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Property / Estate Agent</div>
+          <div class="tpl-niche">Listings via CMS, search, contact. Sanity content types shine here.</div>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-thumb" style="background:linear-gradient(135deg,#262640,#16162a);color:#a5b4fc;">SAAS</div>
+        <div class="tpl-body">
+          <div class="tpl-name">Startup / SaaS Landing</div>
+          <div class="tpl-niche">Hero, features, pricing, FAQ. Tech buyers who value Next.js. Premium tier.</div>
+        </div>
+      </div>
+    </div>
+    <div class="profit-note" style="grid-template-columns:1fr; margin-top:20px;">
+      <div style="text-align:left;">
+        <div class="pn-label" style="margin-top:0;">⚙ THE REUSABILITY SYSTEM</div>
+        <p style="font-size:12px; color:var(--text); margin-top:8px; line-height:1.7;">Create one base Next.js + Sanity starter repo with shared components (nav, hero, sections, footer, contact form, CMS schema). Each template is a styled variant of the same engine. When an order comes in: <code style="font-family:'JetBrains Mono',monospace; background:#06060a; color:var(--fiverr); padding:1px 6px; border-radius:4px;">git clone</code> the template → swap content + theme → deploy to Vercel → invite client to Sanity Studio. Your per-order time drops to 4–8 hours, which is what makes the volume model actually profitable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section id="addons">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">05 — GIG EXTRAS</div>
+      <h2>Add-Ons That Boost Order Value</h2>
+      <p>Gig extras are where Fiverr sellers quietly double their average order value. Offer these as checkboxes at checkout. They're low-effort for you, high-value for the buyer.</p>
+    </div>
+    <div class="copy-block">
+      <div class="copy-head">
+        <span class="copy-label">Recommended Gig Extras</span>
+        <button class="copy-btn" onclick="copyText(this, 'addons')">⧉ Copy</button>
+      </div>
+      <div class="copy-body" id="addons">• Extra page — £40 each
+• Express delivery (48–72 hrs) — £80
+• Advanced SEO setup (meta, sitemap, schema) — £60
+• Blog / news section setup — £50
+• Newsletter signup integration (Mailchimp) — £45
+• Google Analytics + Search Console setup — £35
+• Extra template/design concept — £70
+• 1 month post-launch support & edits — £60/month
+• Logo design (basic) — £50
+• Domain + hosting setup & guidance — £30
+• Multi-language support — £90
+• E-commerce / simple shop integration — £150</div>
+    </div>
+    <div class="tips" style="margin-top:16px;">
+      <div class="tip">
+        <h4>💡 The Support Retainer Play</h4>
+        <p>"1 month post-launch support — £60/mo" is your secret weapon. It converts one-off Fiverr buyers into recurring income, and many renew. This is the volume-gig version of the retainer strategy from your main plan.</p>
+      </div>
+      <div class="tip">
+        <h4>💡 Express Delivery Margin</h4>
+        <p>Because your templates make builds fast, "Express 48hr — £80" is nearly free money. You can often deliver in normal time anyway — buyers just pay for the peace of mind.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">06 — GIG FAQ</div>
+      <h2>FAQ Section</h2>
+      <p>Fiverr lets you add FAQs to your gig. Good FAQs reduce pre-order messages and pre-empt buyer worries. Paste these in.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Will I be able to update the website myself?</div>
+      <div class="faq-a">Yes — that's the whole point. Your site comes with an easy-to-use content manager (CMS). You'll be able to change text, swap images, and update pages yourself with no coding. I include a walkthrough so you're confident managing it.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I need to buy hosting?</div>
+      <div class="faq-a">Your site is deployed on Vercel, which has a generous free tier that suits most small business sites. If you want a custom domain (e.g. yourbusiness.co.uk), that's a small yearly cost I can guide you through, or add as an extra.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What do you need from me to start?</div>
+      <div class="faq-a">Your text content, any images/logo you have, your brand colours (if any), and which template you'd like. Don't worry if your content isn't perfect — I can guide you and we'll refine it during the revisions.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is the site good for Google / SEO?</div>
+      <div class="faq-a">Yes. Sites are built on Next.js, which is excellent for performance and SEO — fast load times and clean, search-friendly code. The Professional and Premium packages include on-page SEO setup, and I offer advanced SEO as an extra.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I own the website after delivery?</div>
+      <div class="faq-a">Completely. You get full access to your CMS and the code. There's no lock-in — the site is yours.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What if I need changes after delivery?</div>
+      <div class="faq-a">Each package includes revisions during the build. After delivery, you can edit content yourself via the CMS. For design changes or new features, I offer affordable post-launch support as a monthly extra.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LAUNCH STEPS -->
+<section id="launch">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">07 — LAUNCH SEQUENCE</div>
+      <h2>Your First-Week Launch Steps</h2>
+      <p>Do these in order. The goal of week one isn't profit — it's a live, polished gig with at least one template ready to show, so you can convert your very first buyer cleanly.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-c">
+          <h4>Build your base starter repo (1 weekend)</h4>
+          <p>Spin up <code>npx create-next-app</code> + <code>npm create sanity@latest</code>. Build shared components: nav, hero, sections, contact form, footer. This is the engine every template clones from. Deploy a demo to Vercel.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-c">
+          <h4>Build 3 live demo templates (2–3 evenings)</h4>
+          <p>Style the engine into Restaurant, Trades, and Clinic variants. Deploy each to its own Vercel subdomain (e.g. restaurant-demo.vercel.app). These become your gig gallery images and live proof.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-c">
+          <h4>Capture gig gallery assets (1 evening)</h4>
+          <p>Screenshot each demo on desktop + mobile. Fiverr lets you upload 3 images + a video. Record a 60-sec Loom showing a template + editing content live in Sanity. Video gigs convert far better.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <div class="step-c">
+          <h4>Create the Fiverr gig (1 evening)</h4>
+          <p>Paste in your title, the three packages, description, tags, extras, and FAQ from this pack. Set launch pricing (~30% lower). Complete your seller profile with a real photo and a short, confident bio.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">5</div>
+        <div class="step-c">
+          <h4>Drive your first orders (ongoing)</h4>
+          <p>Fiverr's algorithm needs initial traction. Share your gig link on LinkedIn, in relevant subreddits (r/forhire), and to anyone you know who needs a site. The first 3 reviews are the hardest and most valuable — chase them hard.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">6</div>
+        <div class="step-c">
+          <h4>Deliver, over-deliver, get the 5★ (per order)</h4>
+          <p>Respond within hours, deliver early, include the Loom walkthrough even on cheaper tiers at first. A wall of 5★ reviews in month one sets up everything that follows. Then raise prices.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRO TIPS -->
+<section id="tips">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">08 — PRO TIPS</div>
+      <h2>Edge That Most Sellers Miss</h2>
+    </div>
+    <div class="tips">
+      <div class="tip">
+        <h4>Respond to messages in under 1 hour</h4>
+        <p>Fiverr ranks gigs partly on response time. Set up the Fiverr app with notifications. Fast replies in the first 24h of an enquiry dramatically lift your conversion and ranking.</p>
+      </div>
+      <div class="tip">
+        <h4>Always "message before ordering"</h4>
+        <p>Encourage buyers to message first. It lets you scope properly, avoid mismatched orders (which risk bad reviews), and upsell the right package. Mismatched auto-orders are the #1 cause of disputes.</p>
+      </div>
+      <div class="tip">
+        <h4>Your demos ARE your portfolio</h4>
+        <p>Unlike most Fiverr sellers showing static mockups, your live Vercel demos let buyers click around real sites. This is a massive trust signal and almost no one at your price point does it.</p>
+      </div>
+      <div class="tip">
+        <h4>Funnel premium leads off-platform (legally)</h4>
+        <p>When a buyer needs something bigger (full Umbraco build, e-commerce, ongoing dev), you can complete it on Fiverr at a custom quote. Repeat clients who trust you become your premium pipeline.</p>
+      </div>
+      <div class="tip">
+        <h4>Use Buyer Requests early</h4>
+        <p>New sellers can browse Buyer Requests and send custom offers. In your first weeks, send 5–10 tailored offers per day. This is the fastest way to land that crucial first order before reviews exist.</p>
+      </div>
+      <div class="tip">
+        <h4>Bank the Fiverr income separately</h4>
+        <p>Route Fiverr payouts straight to your "Tesla Fund" / "Debt Nuke" pots from your main plan. Keep 20% aside for HMRC. Every clean order moves both goals forward.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>FIVERR GIG LAUNCH PACK · SANITY + NEXT.JS + VERCEL · BUILT FOR VOLUME · NOW GO LIVE</p>
+  </div>
+</footer>
+
+<script>
+  function copyText(btn, id) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.innerText;
+      btn.innerText = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerText = orig; btn.classList.remove('copied'); }, 1600);
+    });
+  }
+  function toggleFaq(el) {
+    el.parentElement.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>

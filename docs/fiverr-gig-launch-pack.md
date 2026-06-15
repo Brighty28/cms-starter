@@ -1,5 +1,9 @@
 # Fiverr Gig Launch Pack — Sanity + Next.js Websites
 
+> 💡 Prefer the original styled design (copy buttons, tabs, animations)? Open
+> [`fiverr-gig-launch-pack.html`](./fiverr-gig-launch-pack.html) in a browser.
+> This Markdown version is the same content in a plain, GitHub-readable format.
+
 > `◆ Sanity.io` · `▲ Next.js` · `▲ Vercel` · `● Fiverr Ready`
 
 # Your **Fiverr** Gig Launch Pack

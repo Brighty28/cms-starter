@@ -1,5 +1,9 @@
 # Dev Freedom Plan — Senior .NET Engineer Edition
 
+> 💡 Prefer the original styled design (colours, tabs, animations)? Open
+> [`dev-freedom-plan.html`](./dev-freedom-plan.html) in a browser. This Markdown
+> version is the same content in a plain, GitHub-readable format.
+
 > Senior .NET Developer · 20+ Years Experience · Evening & Weekend Plan
 
 # Dev **Freedom** *Plan*
