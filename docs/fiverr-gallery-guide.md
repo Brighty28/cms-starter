@@ -12,17 +12,23 @@ how to present your real client work (Bolt Services).
 
 ## 1. What goes in the gallery
 
-Fiverr gives you up to **3 images + 1 video + 2 PDFs**. Recommended set:
+Fiverr gives you up to **3 images + 1 video + 2 PDFs**. Everything below is
+pre-built in the `gallery/` folder — you just open each file and screenshot (for
+images) or Print → Save as PDF (for documents).
 
-| Slot | Use | Source |
+| Slot | Use | Source file |
 | --- | --- | --- |
-| Image 1 (main) | Branded title card | `gallery/title-card.html` (screenshot at 1280×769) |
-| Image 2 | Restaurant demo — desktop | Screenshot of `/` |
-| Image 3 | Trades demo — desktop (+ a mobile inset) | Screenshot of `/trades` |
+| Image 1 (main) | Branded title card | `gallery/title-card.html` |
+| Image 2 | Restaurant site card | `gallery/restaurant-card.html` |
+| Image 3 | Trades site card | `gallery/trades-card.html` |
 | Video | 60-sec live-edit walkthrough | See `docs/loom-60s-script.md` |
-| PDF (optional) | Your packages / process one-pager | Export from the gig pack |
+| PDF 1 | Packages & process one-pager | `gallery/packages-onepager.html` |
+| PDF 2 | Portfolio / template showcase | `gallery/portfolio-onepager.html` |
 
-Fiverr's recommended image size is **1280 × 769 px**. Shoot a little larger and crop to that ratio.
+Each image card is a browser-framed, on-brand composition sized to Fiverr's
+recommended **1280 × 769 px** — they read as polished site shots and look more
+professional than raw screenshots. (Prefer an authentic raw screenshot of the
+real live site instead? See §3 — both work.)
 
 ---
 
@@ -70,21 +76,27 @@ For launching your gig today, the single deploy with two routes is plenty.
 
 ---
 
-## 3. Capture the screenshots
+## 3. Capture the three images (recommended: the gallery cards)
 
-**Desktop demo shots (Image 2 & 3):**
-1. Run `npm run dev` (or open your live Vercel URL).
-2. Set the browser window to ~1280px wide. In Chrome: `F12` → device toolbar
-   (`Ctrl/Cmd+Shift+M`) → set width to **1280** → "Responsive".
-3. Capture a full-page or above-the-fold shot:
-   - Chrome DevTools → `Ctrl/Cmd+Shift+P` → type "screenshot" → **"Capture full size screenshot"**.
-4. Do this for both `/` and `/trades`.
+All three image cards work the same way — open the HTML file and screenshot the
+1280×769 frame:
 
-**The title card (Image 1):**
-1. Open `gallery/title-card.html` in your browser.
-2. It contains a frame sized to exactly **1280×769**. Screenshot just that frame
-   (DevTools → select the `<div class="card">` → "Capture node screenshot" gives
-   a pixel-perfect crop).
+1. Open the file in Chrome: `gallery/title-card.html`, `gallery/restaurant-card.html`,
+   `gallery/trades-card.html`.
+2. Right-click the card → **Inspect** → in the Elements panel select the
+   `<div class="card">` element.
+3. With it selected, open the command menu (`Ctrl/Cmd+Shift+P`), type
+   **"screenshot"**, choose **"Capture node screenshot"**. You get a pixel-perfect
+   1280×769 PNG — no cropping needed.
+4. Upload: title card → Image 1 (Primary), restaurant → Image 2, trades → Image 3.
+
+> Give the page a second to load the web fonts before capturing.
+
+**Alternative — raw screenshot of the real live site** (more authentic, optional):
+1. Open your live `…vercel.app/` or `…/trades` (or run `npm run dev`).
+2. `F12` → device toolbar (`Ctrl/Cmd+Shift+M`) → set width to **1280** → "Responsive".
+3. `Ctrl/Cmd+Shift+P` → "screenshot" → **"Capture full size screenshot"**, then
+   crop to a 1280×769 region.
 
 **Mobile inset (nice-to-have):**
 - Set the device toolbar to iPhone width (~390px), screenshot, and drop it as a
@@ -93,7 +105,24 @@ For launching your gig today, the single deploy with two routes is plenty.
 
 ---
 
-## 4. Your portfolio entries
+## 4. The two PDF documents
+
+Fiverr's "Documents" slots accept **PDFs only**. Two are ready in `gallery/`:
+
+- `packages-onepager.html` → **Packages & Process** (your tiers, how it works, add-ons)
+- `portfolio-onepager.html` → **Portfolio & Template Showcase** (Bolt + the three demos)
+
+Turn each into a PDF straight from your browser — no extra software:
+
+1. Open the `.html` file in Chrome.
+2. `Ctrl/Cmd+P` → **Destination: Save as PDF**.
+3. **Paper size: A4**, **Margins: Default**, and tick **More settings → Background
+   graphics** (this is what makes the coloured header bar print — don't skip it).
+4. Save, then upload the two PDFs to Fiverr's Documents section.
+
+---
+
+## 5. Your portfolio entries
 
 Use these as the captions / "My Portfolio" items on your gig and Fiverr profile.
 
@@ -131,12 +160,14 @@ Use these as the captions / "My Portfolio" items on your gig and Fiverr profile.
 
 ---
 
-## 5. Launch checklist
+## 6. Launch checklist
 
-- [ ] `vercel --prod` — both demos live and green
-- [ ] Open `/` and `/trades` on the live URL, click around, confirm they look right
-- [ ] Capture: title card, restaurant desktop, trades desktop (+ mobile insets)
-- [ ] Capture a clean screenshot of the Bolt Services site for your portfolio
+- [ ] Deploy live and green (`/`, `/trades`, `/clinic` all load)
+- [ ] Image 1: screenshot `gallery/title-card.html` → upload as Primary
+- [ ] Image 2: screenshot `gallery/restaurant-card.html`
+- [ ] Image 3: screenshot `gallery/trades-card.html`
+- [ ] PDF 1: Print → Save as PDF from `gallery/packages-onepager.html` (Background graphics ON)
+- [ ] PDF 2: Print → Save as PDF from `gallery/portfolio-onepager.html` (Background graphics ON)
 - [ ] Record the 60-sec Loom (`docs/loom-60s-script.md`)
-- [ ] Upload all assets to the gig gallery (main image = title card)
+- [ ] Add a Bolt Services screenshot to your profile portfolio
 - [ ] Paste the gig title, packages, description, FAQ from `docs/fiverr-gig-launch-pack.md`

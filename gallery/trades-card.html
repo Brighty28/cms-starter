@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gallery Card — Trades (1280×769)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1b1b22; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; font-family: 'Inter', sans-serif; }
+
+  /* === Screenshot exactly this 1280×769 box === */
+  .card { width: 1280px; height: 769px; overflow: hidden; background: #f4f7fb; position: relative; display: flex; flex-direction: column; }
+
+  /* browser chrome */
+  .chrome { height: 46px; background: #e7edf5; border-bottom: 1px solid rgba(16,42,67,0.12); display: flex; align-items: center; padding: 0 18px; gap: 8px; flex-shrink: 0; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .urlbar { margin-left: 14px; background: #fff; border: 1px solid rgba(16,42,67,0.12); border-radius: 7px; padding: 7px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #627d98; min-width: 360px; }
+  .badge { margin-left: auto; background: #102a43; color: #f59e0b; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 100px; }
+
+  /* hero */
+  .hero { height: 396px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+    background: linear-gradient(135deg, #0b2236 0%, #16395c 55%, #1f4e79 100%); }
+  .hero .eyebrow { text-transform: uppercase; letter-spacing: 4px; font-size: 14px; opacity: 0.9; margin-bottom: 18px; }
+  .hero h1 { font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 800; font-size: 80px; line-height: 0.98; letter-spacing: -0.5px; margin-bottom: 26px; }
+  .hero .btn { display: inline-block; background: #f59e0b; color: #102a43; padding: 16px 40px; border-radius: 4px; font-weight: 700; font-size: 16px; }
+
+  /* trust bar */
+  .trust { height: 52px; background: #102a43; color: #fff; display: flex; align-items: center; justify-content: center; gap: 40px; font-size: 15px; font-weight: 600; flex-shrink: 0; }
+  .trust .t { display: inline-flex; align-items: center; gap: 8px; }
+  .trust .tick { color: #f59e0b; }
+
+  /* services peek */
+  .svc { flex: 1; padding: 26px 60px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .scard { background: #fff; border: 1px solid rgba(16,42,67,0.12); border-radius: 10px; padding: 22px; }
+  .scard .ic { font-size: 30px; margin-bottom: 10px; }
+  .scard h3 { font-family: 'Barlow Semi Condensed', sans-serif; font-size: 22px; color: #102a43; margin-bottom: 7px; }
+  .scard p { color: #627d98; font-size: 13.5px; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <!-- Screenshot ONLY the .card box (1280×769). DevTools → select <div class="card"> → "Capture node screenshot" gives a pixel-perfect crop. -->
+  <div class="card">
+    <div class="chrome">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="urlbar">sterlingplumbing.vercel.app</span>
+      <span class="badge">★ Editable CMS · Live demo</span>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Gas Safe plumbing &amp; heating · Greater Manchester</div>
+        <h1>Sterling Plumbing &amp; Heating</h1>
+        <span class="btn">Get a Free Quote</span>
+      </div>
+    </div>
+    <div class="trust">
+      <span class="t"><span class="tick">✔</span> Gas Safe Registered</span>
+      <span class="t"><span class="tick">✔</span> 24/7 Emergency Call-Out</span>
+      <span class="t"><span class="tick">✔</span> 12-Month Guarantee</span>
+    </div>
+    <div class="svc">
+      <div class="scard"><div class="ic">🔧</div><h3>Boiler Installation &amp; Repair</h3><p>Gas Safe installation, servicing and fast breakdown repair for all major brands.</p></div>
+      <div class="scard"><div class="ic">🚿</div><h3>Bathroom Fitting</h3><p>Full design and fit-out, from a simple refresh to a complete renovation.</p></div>
+      <div class="scard"><div class="ic">🚨</div><h3>24/7 Emergency Plumbing</h3><p>Burst pipes, leaks and blockages handled fast — day or night, all year.</p></div>
+    </div>
+  </div>
+</body>
+</html>
