@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Freedom Plan — Senior .NET Engineer Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080a;
+    --surface: #0b1117;
+    --card: #0f1820;
+    --card2: #121e27;
+    --border: rgba(255,255,255,0.06);
+    --border-bright: rgba(99,202,255,0.25);
+    --accent: #63caff;
+    --accent2: #e8212a;
+    --gold: #ffd166;
+    --green: #06d6a0;
+    --muted: #3d5a6e;
+    --muted2: #5a7a8e;
+    --text: #b8d4e0;
+    --white: #eaf4fa;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #0b1820 0%, #05080a 50%, #0d0f14 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 0 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(99,202,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(232,33,42,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+  .hero h1 em { color: var(--accent2); font-style: normal; }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted2);
+    max-width: 560px;
+    margin: 20px 0 36px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .hstat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hstat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .hstat-val.gold { color: var(--gold); }
+  .hstat-val.red { color: var(--accent2); }
+  .hstat-val.green { color: var(--green); }
+
+  .hstat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 16px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    padding: 48px 0 80px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION HEADERS */
+  .sh {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .sh h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .sh p {
+    color: var(--muted2);
+    font-size: 13px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--white);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-sub {
+    font-size: 12px;
+    color: var(--muted2);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* INCOME STREAMS TAB */
+  .streams-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stream-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 20px;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+
+  .stream-item:hover { border-color: var(--border-bright); }
+
+  .stream-num {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .tier-1 .stream-num { background: rgba(6,214,160,0.1); color: var(--green); border: 1px solid rgba(6,214,160,0.2); }
+  .tier-2 .stream-num { background: rgba(99,202,255,0.1); color: var(--accent); border: 1px solid rgba(99,202,255,0.2); }
+  .tier-3 .stream-num { background: rgba(255,209,102,0.1); color: var(--gold); border: 1px solid rgba(255,209,102,0.2); }
+
+  .stream-body h3 {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .stream-body .tier-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .tier-1 .tier-tag { color: var(--green); background: rgba(6,214,160,0.08); border: 1px solid rgba(6,214,160,0.15); }
+  .tier-2 .tier-tag { color: var(--accent); background: rgba(99,202,255,0.08); border: 1px solid rgba(99,202,255,0.15); }
+  .tier-3 .tier-tag { color: var(--gold); background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.15); }
+
+  .stream-body p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .stream-setup {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stream-setup-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .setup-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .setup-step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .setup-step::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .earn-block {
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 120px;
+  }
+
+  .earn-main {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .tier-1 .earn-main { color: var(--green); }
+  .tier-2 .earn-main { color: var(--accent); }
+  .tier-3 .earn-main { color: var(--gold); }
+
+  .earn-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .earn-hrs {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted2);
+  }
+
+  /* SETUP PLAN TAB */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    position: relative;
+  }
+
+  .phase:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 199px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .phase-meta {
+    padding: 32px 32px 32px 0;
+    position: relative;
+  }
+
+  .phase-meta::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 40px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+
+  .phase-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .phase-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .phase-time {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .phase-body {
+    padding: 32px 0 32px 40px;
+    border-left: 1px solid var(--border);
+  }
+
+  .phase-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ptask {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .ptask-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ptask p {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .ptask ul {
+    margin-top: 8px;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ptask ul li {
+    font-size: 12px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .ptask ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  .code-snippet {
+    background: #050a0e;
+    border: 1px solid rgba(99,202,255,0.1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .code-snippet .comment { color: var(--muted); }
+  .code-snippet .key { color: var(--gold); }
+  .code-snippet .val { color: var(--green); }
+  .code-snippet .str { color: #ff8a65; }
+
+  /* FINANCIAL TAB */
+  .fin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .fin-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .fin-card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .fin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .fin-row:last-child { border-bottom: none; }
+
+  .fin-row-label { font-size: 12px; color: var(--text); line-height: 1.4; flex: 1; }
+  .fin-row-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .fin-row-val.g { color: var(--green); }
+  .fin-row-val.a { color: var(--accent); }
+  .fin-row-val.gold { color: var(--gold); }
+  .fin-row-val.r { color: var(--accent2); }
+  .fin-row-val.w { color: var(--white); font-size: 18px; }
+
+  .timeline-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .tl-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .tl-track {
+    position: relative;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    margin-bottom: 28px;
+  }
+
+  .tl-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--green), var(--accent), var(--gold));
+  }
+
+  .tl-milestones {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .tl-m {
+    text-align: center;
+    position: relative;
+  }
+
+  .tl-m-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--muted);
+    border: 2px solid var(--bg);
+    margin: 0 auto 8px;
+  }
+
+  .tl-m.done .tl-m-dot { background: var(--green); }
+  .tl-m.active .tl-m-dot { background: var(--accent); box-shadow: 0 0 0 4px rgba(99,202,255,0.2); }
+  .tl-m.future .tl-m-dot { background: var(--muted); }
+
+  .tl-m-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .tl-m.active .tl-m-label { color: var(--accent); }
+  .tl-m.done .tl-m-label { color: var(--green); }
+
+  /* TOOLS TAB */
+  .tools-cats {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .tool-cat-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tool-cat-title span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .tool-card:hover { border-color: var(--border-bright); }
+
+  .tool-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .tool-why {
+    font-size: 11px;
+    color: var(--muted2);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .tool-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: var(--border-bright); }
+  .check-item.done { opacity: 0.5; }
+  .check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--muted);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    transition: all 0.2s;
+  }
+
+  .check-item.done .check-box {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .check-box::after {
+    content: '✓';
+    font-size: 11px;
+    color: #000;
+    display: none;
+  }
+
+  .check-item.done .check-box::after { display: block; }
+
+  .check-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .check-text strong {
+    color: var(--white);
+    font-weight: 600;
+    display: block;
+    font-size: 13px;
+  }
+
+  .check-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .check-tag.week1 { background: rgba(6,214,160,0.1); color: var(--green); border: 1px solid rgba(6,214,160,0.2); }
+  .check-tag.week2 { background: rgba(99,202,255,0.1); color: var(--accent); border: 1px solid rgba(99,202,255,0.2); }
+  .check-tag.month1 { background: rgba(255,209,102,0.1); color: var(--gold); border: 1px solid rgba(255,209,102,0.2); }
+  .check-tag.ongoing { background: rgba(232,33,42,0.08); color: #ff8a8a; border: 1px solid rgba(232,33,42,0.2); }
+
+  /* PRICING TABLE */
+  .pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+
+  .pricing-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pricing-table td {
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .pricing-table tr:last-child td { border-bottom: none; }
+  .pricing-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .pricing-table td:first-child { font-weight: 600; color: var(--white); }
+  .pricing-table .price { font-family: 'JetBrains Mono', monospace; color: var(--green); font-weight: 700; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stream-item { grid-template-columns: 40px 1fr; }
+    .earn-block { display: none; }
+    .fin-grid { grid-template-columns: 1fr; }
+    .phase { grid-template-columns: 1fr; }
+    .phase-meta::after { display: none; }
+    .phase-body { border-left: none; padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Senior .NET Developer · 20+ Years Experience · Evening & Weekend Plan</div>
+    <h1>Dev <span>Freedom</span><br><em>Plan</em></h1>
+    <p class="hero-sub">A precision-engineered income strategy built around your C#, Azure, AWS, Next.js and Umbraco stack — targeting debt clearance and a Model Y Performance in the most efficient way possible.</p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-val gold">£56,000+</div>
+        <div class="hstat-label">Model Y Performance target</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val red">&lt;£5,000</div>
+        <div class="hstat-label">Current debt (clearable fast)</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val green">£2,800+</div>
+        <div class="hstat-label">Realistic monthly side income</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val">~20 mo</div>
+        <div class="hstat-label">To both goals achieved</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="nav-tabs">
+  <div class="tab active" onclick="showTab('streams', this)">Income Streams</div>
+  <div class="tab" onclick="showTab('setup', this)">Setup Plan</div>
+  <div class="tab" onclick="showTab('pricing', this)">Your Pricing Guide</div>
+  <div class="tab" onclick="showTab('finance', this)">Financial Projection</div>
+  <div class="tab" onclick="showTab('tools', this)">Dev Tools & Platforms</div>
+  <div class="tab" onclick="showTab('checklist', this)">Action Checklist</div>
+</div>
+
+<!-- ===================== INCOME STREAMS ===================== -->
+<div id="tab-streams" class="section active">
+<div class="wrap">
+  <div class="sh">
+    <h2>Your Income Streams</h2>
+    <p>Ranked by hourly rate · Built for evenings & weekends</p>
+  </div>
+
+  <div class="streams-list">
+
+    <div class="stream-item tier-2">
+      <div class="stream-num">01</div>
+      <div class="stream-body">
+        <h3>Senior Freelance Development — Contracts & Projects</h3>
+        <span class="tier-tag">Highest Earner · Core Stream</span>
+        <p>Your 20 years of .NET, C#, Azure and AWS experience puts you in the £65–£120/hr contract market. Platforms like Toptal, Gun.io, and Contra cater specifically to senior engineers. You can pick up short contracts (2–8 weeks) or longer rolling engagements done entirely remotely, evenings and weekends.</p>
+        <div class="stream-setup">
+          <div class="stream-setup-title">How to set up this week</div>
+          <div class="setup-steps">
+            <div class="setup-step">Create a Toptal profile — their vetting is tough but means £100+/hr rates. Apply via toptal.com/developers.</div>
+            <div class="setup-step">Sign up to Contra.com and Gun.io — both senior-focused with no bidding wars.</div>
+            <div class="setup-step">Update your LinkedIn: "Senior .NET Engineer · Azure · AWS · Available for freelance." Add Open to Work (visible to recruiters only).</div>
+            <div class="setup-step">Create a simple one-page portfolio at GitHub Pages or Vercel — list 3 projects with tech stack, problem solved, and outcome.</div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-block">
+        <div class="earn-main">£95</div>
+        <div class="earn-period">/hour avg</div>
+        <div class="earn-hrs">10–15 hrs/wk<br>= £3,800–5,700/mo</div>
+      </div>
+    </div>
+
+    <div class="stream-item tier-1">
+      <div class="stream-num">02</div>
+      <div class="stream-body">
+        <h3>Umbraco CMS Websites for Local Businesses</h3>
+        <span class="tier-tag">Fast Wins · You Already Do This</span>
+        <p>You've already built local business websites. Systemise this into a productised service. Charge £1,500–£4,000 per site (Umbraco + hosting + basic SEO). One site per month on weekends is very realistic. Target tradies, restaurants, clinics, estate agents — high-need, low-tech sectors willing to pay properly.</p>
+        <div class="stream-setup">
+          <div class="stream-setup-title">How to productise this</div>
+          <div class="setup-steps">
+            <div class="setup-step">Create a templated Umbraco starter pack — reusable blocks for nav, hero, about, services, contact. Deploy time drops to 8–12 hrs per site.</div>
+            <div class="setup-step">Offer three tiers: Starter (£1,500), Professional (£2,500), Premium (£4,000 with SEO + 3mo support).</div>
+            <div class="setup-step">Join local Facebook business groups, post 2 case studies, offer a free 30-min site audit call. Start local word-of-mouth.</div>
+            <div class="setup-step">Charge 50% upfront — this funds the Tesla pot immediately on booking.</div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-block">
+        <div class="earn-main">£2.5k</div>
+        <div class="earn-period">/site avg</div>
+        <div class="earn-hrs">1 site/month<br>= £2,500/mo</div>
+      </div>
+    </div>
+
+    <div class="stream-item tier-2">
+      <div class="stream-num">03</div>
+      <div class="stream-body">
+        <h3>Azure / AWS Consulting & Architecture Reviews</h3>
+        <span class="tier-tag">Premium Niche · High Demand</span>
+        <p>Cloud consultancy is white-hot. Companies constantly need someone to review their Azure/AWS architecture, cut costs, or migrate workloads. At your level, charge £800–£1,500/day for consulting days or £500 for a 2-hour architecture review call. This is pure knowledge monetisation — no code delivery required.</p>
+        <div class="stream-setup">
+          <div class="stream-setup-title">How to position yourself</div>
+          <div class="setup-steps">
+            <div class="setup-step">Create a Calendly link for "Azure Architecture Review — £500 for 90 mins." Share on LinkedIn and relevant Slack groups.</div>
+            <div class="setup-step">Write 3 LinkedIn articles: cost optimisation tips, common Azure migration mistakes, .NET on AWS patterns. Establish authority.</div>
+            <div class="setup-step">Target tech startups on LinkedIn who are scaling fast and will hit cloud cost pain — DM CTOs/engineering managers directly.</div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-block">
+        <div class="earn-main">£500</div>
+        <div class="earn-period">/session</div>
+        <div class="earn-hrs">2–3 sessions/mo<br>= £1,000–1,500</div>
+      </div>
+    </div>
+
+    <div class="stream-item tier-3">
+      <div class="stream-num">04</div>
+      <div class="stream-body">
+        <h3>Technical Content — Articles, Courses & YouTube</h3>
+        <span class="tier-tag">Passive Builder · Long Game</span>
+        <p>Senior devs are paid well to write technical content. LogRocket, CSS-Tricks, Auth0, and Telerik all pay £200–£500 per article. Start a YouTube channel or Udemy course on .NET 8, Azure patterns, or Umbraco — these scale into thousands per month passively once established. Write once, earn indefinitely.</p>
+        <div class="stream-setup">
+          <div class="stream-setup-title">Where to start</div>
+          <div class="setup-steps">
+            <div class="setup-step">Submit a pitch to LogRocket Blog (blog.logrocket.com/write-for-us) — they pay £350+ per accepted .NET or Azure article.</div>
+            <div class="setup-step">Post one 800-word tutorial to dev.to weekly. Build audience. Monetise later via sponsorships.</div>
+            <div class="setup-step">Record a 3-hour Udemy course: "Umbraco CMS for .NET Developers" — your exact niche, low competition, £20–50 per sale, scales forever.</div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-block">
+        <div class="earn-main">£350</div>
+        <div class="earn-period">/article</div>
+        <div class="earn-hrs">Growing to<br>£800–2k/mo</div>
+      </div>
+    </div>
+
+    <div class="stream-item tier-3">
+      <div class="stream-num">05</div>
+      <div class="stream-body">
+        <h3>Micro-SaaS or Developer Tool</h3>
+        <span class="tier-tag">High Ceiling · Weekend Project</span>
+        <p>Build a small B2B SaaS tool in your stack solving a niche problem — an Umbraco plugin, an Azure cost dashboard, a .NET scaffolding CLI tool. Charge £29–£99/mo via Stripe. Even 30 subscribers = £870–£2,970 MRR with zero ongoing time once built. You have every skill needed to ship this.</p>
+        <div class="stream-setup">
+          <div class="stream-setup-title">Where to find ideas</div>
+          <div class="setup-steps">
+            <div class="setup-step">Browse r/dotnet, r/csharp, Umbraco community forums — look for repeated pain points or "I wish there was a tool that..."</div>
+            <div class="setup-step">Validate the idea first: post a landing page with a waitlist before writing a line of code. If 50 people sign up, build it.</div>
+            <div class="setup-step">Use Next.js frontend + C# API + Azure hosting — your exact stack. Ship an MVP in 4 weekends.</div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-block">
+        <div class="earn-main">£2k+</div>
+        <div class="earn-period">/mo MRR</div>
+        <div class="earn-hrs">Once built<br>near-passive</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ===================== SETUP PLAN ===================== -->
+<div id="tab-setup" class="section">
+<div class="wrap">
+  <div class="sh">
+    <h2>Step-By-Step Setup</h2>
+    <p>Exact actions in exact order — evenings and weekends only</p>
+  </div>
+
+  <div class="phases">
+
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-label">Phase 01</div>
+        <div class="phase-name">LAUNCH WEEK</div>
+        <div class="phase-time">Days 1–7</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-tasks">
+          <div class="ptask">
+            <div class="ptask-title">🌐 Build Your Portfolio Site (2 evenings)</div>
+            <p>Deploy a clean one-pager to Vercel or Netlify. Stack: Next.js (your native ground). Include: your name + title, tech stack, 3 past project summaries (local sites count), a contact form, and a clear CTA: "Available for freelance — from £85/hr."</p>
+            <ul>
+              <li>Buy domain: [yourname].dev or [yourname].co.uk — ~£12/yr on Namecheap</li>
+              <li>Use shadcn/ui for a clean professional look fast</li>
+              <li>Add a Calendly embed for booking discovery calls</li>
+              <li>Link GitHub, LinkedIn prominently</li>
+            </ul>
+            <div class="code-snippet">
+<span class="comment">// Quick Vercel deploy from your existing Next.js skills</span>
+<span class="key">npx</span> <span class="val">create-next-app@latest</span> my-portfolio
+<span class="key">cd</span> my-portfolio
+<span class="comment">// Build it, then:</span>
+<span class="key">npx</span> <span class="val">vercel</span> <span class="str">--prod</span>
+<span class="comment">// Live in minutes. Add custom domain in Vercel dashboard.</span>
+            </div>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">💼 Set Up Freelance Profiles (1 evening)</div>
+            <ul>
+              <li><strong>Toptal</strong> — Apply immediately, the vetting takes 2–3 weeks. Worth the wait for top rates.</li>
+              <li><strong>Contra.com</strong> — Senior-first platform, no bidding, fixed rate. Set up profile in 45 mins.</li>
+              <li><strong>LinkedIn</strong> — Update headline, turn on "Open to Work" (recruiter-only mode). Add all tech keywords to skills section.</li>
+              <li><strong>PeoplePerHour</strong> — Good for UK market. Create 3 service listings: .NET Development, Azure Consulting, Umbraco CMS.</li>
+            </ul>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">🏦 Set Up Financial Separation (30 mins)</div>
+            <p>Open a Monzo or Starling Business account (free, instant). This is your side-income account. Set up two savings pots inside it:</p>
+            <ul>
+              <li>Pot 1: "Tesla Fund" — auto-save 35% of every payment received</li>
+              <li>Pot 2: "Debt Nuke" — auto-save 40% of every payment received</li>
+              <li>Pot 3: "Tax Reserve" — save 20% for self-assessment (HMRC)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-label">Phase 02</div>
+        <div class="phase-name">FIRST CLIENTS</div>
+        <div class="phase-time">Weeks 2–4</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-tasks">
+          <div class="ptask">
+            <div class="ptask-title">📣 Outreach Campaign — Local Business Sites</div>
+            <p>Your fastest, highest-certainty cash source. You've done this before.</p>
+            <ul>
+              <li>Google "[your town] plumber/dentist/restaurant" — check which ones have terrible websites</li>
+              <li>Send 10 personalised outreach emails per week with a screenshot of their current site and what you'd improve</li>
+              <li>Offer a free 20-min audit call. Convert on the call to a paid project.</li>
+              <li>Target: 1 booking in the first month = £1,500–£2,500</li>
+            </ul>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">🤝 Post on LinkedIn — "Available for Freelance"</div>
+            <p>Write one post this week. Format: "I'm a .NET/Azure engineer with 20 years experience. I'm taking on 2 freelance clients. Here's what I can help with..." — list your specialisms. This often generates leads directly from your network. Past colleagues are your warm audience.</p>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">✍️ First Paid Article Pitch</div>
+            <p>Pick one topic you know cold: e.g. "Deploying .NET 8 apps to Azure Container Apps" or "Umbraco Heartcore vs traditional Umbraco." Pitch to LogRocket, Telerik Blog, or C# Corner. Most pay on acceptance — quick turnaround for £200–£400.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-label">Phase 03</div>
+        <div class="phase-name">SCALE UP</div>
+        <div class="phase-time">Months 2–4</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-tasks">
+          <div class="ptask">
+            <div class="ptask-title">🔄 Convert One Client to Retainer</div>
+            <p>After completing a website or project, pitch a maintenance + support retainer: £250–£500/month for ongoing updates, security patches, and a monthly call. This creates predictable income. 3 retainer clients = £750–£1,500/mo passively.</p>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">☁️ Land One Azure/AWS Consulting Day</div>
+            <p>Post on LinkedIn: "Offering Azure architecture reviews — £500 for 90 minutes, includes written recommendations report." Direct message 20 CTOs or VPs of Engineering at Series A/B startups in your area. One yes per month = +£500.</p>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">📹 Start Your Passive Content Channel</div>
+            <p>Pick one channel: YouTube or Udemy. Record your first tutorial on your primary niche. Aim for one piece of content per weekend. This compounds — content from month 2 earns in month 12.</p>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">💡 Validate Your Micro-SaaS Idea</div>
+            <p>Spend one weekend building a waitlist landing page for a tool idea. Share in dev communities. If 30+ people sign up, you've validated. Start building the following weekend. Use your own stack — ship fast.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-label">Phase 04</div>
+        <div class="phase-name">FREEDOM</div>
+        <div class="phase-time">Months 5–20</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-tasks">
+          <div class="ptask">
+            <div class="ptask-title">🎯 Debt Cleared · Tesla Deposit Growing</div>
+            <p>At £2,800+/month in side income, allocating 40% to debt clears £5,000 in under 5 months. Tesla fund simultaneously grows. By month 8–10 you're debt free and the full allocation flips to the Tesla pot. Model Y Performance ordered by month 18–20.</p>
+          </div>
+          <div class="ptask">
+            <div class="ptask-title">🚀 Optional: Leave the Day Job</div>
+            <p>If your side income stabilises at £5,000+/month for 3 consecutive months, you have grounds to go fully independent. At that point you're a senior contractor on your own terms — no commute, no office politics, 3x your current hourly rate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ===================== PRICING ===================== -->
+<div id="tab-pricing" class="section">
+<div class="wrap">
+  <div class="sh">
+    <h2>Your Pricing Guide</h2>
+    <p>Never undersell 20 years of senior expertise again</p>
+  </div>
+
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title">⚡ Rule #1: You Are Senior. Price Senior.</div>
+    <div class="card-sub">The market rate for a senior .NET/Azure contractor in the UK is £550–£900/day. On platforms you may start slightly below market to build reviews, but never go below £65/hr for development work. Your Umbraco niche adds scarcity premium — fewer developers know it deeply.</div>
+  </div>
+
+  <div class="card">
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Rate</th>
+          <th>Delivery</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Senior .NET Development (hourly)</td>
+          <td class="price">£85–£120/hr</td>
+          <td>Remote, async</td>
+          <td>Start at £85 to win first reviews, raise to £110+ after 3 projects</td>
+        </tr>
+        <tr>
+          <td>Azure Architecture Review</td>
+          <td class="price">£500/session</td>
+          <td>90-min video call + written report</td>
+          <td>Pure knowledge — no code. One of your highest ££ per hour activities</td>
+        </tr>
+        <tr>
+          <td>AWS Architecture Review</td>
+          <td class="price">£500/session</td>
+          <td>90-min video call + written report</td>
+          <td>Same format, same price — you have both certifications of experience</td>
+        </tr>
+        <tr>
+          <td>Umbraco Website — Starter</td>
+          <td class="price">£1,500</td>
+          <td>5-page site, 2 weeks</td>
+          <td>50% upfront. Use your templated starter pack.</td>
+        </tr>
+        <tr>
+          <td>Umbraco Website — Professional</td>
+          <td class="price">£2,500</td>
+          <td>10 pages, custom design, 3 weeks</td>
+          <td>50% upfront. Add blog, forms, integrations.</td>
+        </tr>
+        <tr>
+          <td>Umbraco Website — Premium</td>
+          <td class="price">£4,000</td>
+          <td>Full build + SEO + 3mo support</td>
+          <td>Best value positioning. Justify with ongoing support value.</td>
+        </tr>
+        <tr>
+          <td>Monthly Maintenance Retainer</td>
+          <td class="price">£300–£500/mo</td>
+          <td>Ongoing per client</td>
+          <td>Updates, security, backups, 1hr support/month. 3 clients = £1,500/mo passive</td>
+        </tr>
+        <tr>
+          <td>Technical Article</td>
+          <td class="price">£250–£500</td>
+          <td>Per published article</td>
+          <td>LogRocket, Telerik, Auth0, C# Corner, Smashing Magazine</td>
+        </tr>
+        <tr>
+          <td>Code Review / Technical Audit</td>
+          <td class="price">£400/audit</td>
+          <td>Written report within 48hrs</td>
+          <td>Review someone's .NET codebase. Great for startups pre-launch.</td>
+        </tr>
+        <tr>
+          <td>Mentoring Session</td>
+          <td class="price">£150/hr</td>
+          <td>1-on-1 video call</td>
+          <td>Junior-mid devs pay well to access senior knowledge. Use MentorCruise.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ===================== FINANCIAL PROJECTION ===================== -->
+<div id="tab-finance" class="section">
+<div class="wrap">
+  <div class="sh">
+    <h2>Financial Projection</h2>
+    <p>Conservative estimates based on evenings and alternate weekends</p>
+  </div>
+
+  <div class="timeline-bar">
+    <div class="tl-title">Your Milestone Timeline</div>
+    <div class="tl-track">
+      <div class="tl-fill" style="width: 5%;"></div>
+    </div>
+    <div class="tl-milestones">
+      <div class="tl-m active">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Now<br>Start</div>
+      </div>
+      <div class="tl-m future">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Mo 1<br>First £</div>
+      </div>
+      <div class="tl-m future">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Mo 4<br>Debt Free</div>
+      </div>
+      <div class="tl-m future">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Mo 8<br>£10k Tesla</div>
+      </div>
+      <div class="tl-m future">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Mo 12<br>Retainers Live</div>
+      </div>
+      <div class="tl-m future">
+        <div class="tl-m-dot"></div>
+        <div class="tl-m-label">Mo 18–20<br>🚗 Tesla</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fin-grid">
+    <div class="fin-card">
+      <div class="fin-card-title">Monthly Income Breakdown (Conservative)</div>
+      <div class="fin-row">
+        <span class="fin-row-label">Freelance dev work (10 hrs/wk @ £85/hr)</span>
+        <span class="fin-row-val g">+£1,400</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Umbraco website project (1/mo)</span>
+        <span class="fin-row-val g">+£1,750</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Azure/AWS consulting (1–2 sessions)</span>
+        <span class="fin-row-val g">+£500</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Technical articles (2/mo)</span>
+        <span class="fin-row-val g">+£600</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Maintenance retainers (Month 3+)</span>
+        <span class="fin-row-val g">+£900</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Gross Monthly Side Income</span>
+        <span class="fin-row-val w">£5,150</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Tax reserve (20% — self-assessment)</span>
+        <span class="fin-row-val r">−£1,030</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Net Spendable Monthly</span>
+        <span class="fin-row-val a">£4,120</span>
+      </div>
+    </div>
+
+    <div class="fin-card">
+      <div class="fin-card-title">Allocation Strategy</div>
+      <div class="fin-row">
+        <span class="fin-row-label">Debt Nuke — first 4 months (50% of net)</span>
+        <span class="fin-row-val r">£2,060/mo</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Tesla Fund — first 4 months (30% of net)</span>
+        <span class="fin-row-val gold">£1,236/mo</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Reinvest / Buffer (20% of net)</span>
+        <span class="fin-row-val a">£824/mo</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Debt cleared in approx.</span>
+        <span class="fin-row-val g">~3 months</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">After debt: full 80% to Tesla (£3,296/mo)</span>
+        <span class="fin-row-val gold">+£3,296/mo</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Tesla deposit (£10k) reached by</span>
+        <span class="fin-row-val gold">Month 6–7</span>
+      </div>
+      <div class="fin-row">
+        <span class="fin-row-label">Full Model Y Performance fund by</span>
+        <span class="fin-row-val w">Month 18–20</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Tax & Legal — What You Need to Know</div>
+    <div class="card-sub">As a UK resident doing freelance work on the side of employment, you must register as self-employed with HMRC if earnings exceed £1,000/year. Here's what to do:</div>
+    <div class="setup-steps">
+      <div class="setup-step">Register for Self Assessment at gov.uk/register-for-self-assessment — takes 10 minutes online.</div>
+      <div class="setup-step">Open a free FreeAgent or Wave account to track all income and expenses from day one. Makes tax return trivial.</div>
+      <div class="setup-step">Save 20% of gross earnings in a separate pot — this covers your income tax and NI on profits above your Personal Allowance.</div>
+      <div class="setup-step">You can claim home office costs, equipment, software subscriptions, and business mileage as allowable expenses.</div>
+      <div class="setup-step">Consider forming a Ltd company once monthly earnings exceed £3,000 consistently — more tax efficient, better client credibility.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== TOOLS ===================== -->
+<div id="tab-tools" class="section">
+<div class="wrap">
+  <div class="sh">
+    <h2>Your Dev Tools Stack</h2>
+    <p>Everything you need to operate a professional freelance business</p>
+  </div>
+
+  <div class="tools-cats">
+
+    <div>
+      <div class="tool-cat-title">Finding Clients <span>Platforms & Marketplaces</span></div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">Toptal</div>
+          <div class="tool-why">Top 3% of developers. Rigorous vetting but commands £100+/hr rates once in. Apply now — takes 2–3 weeks.</div>
+          <a class="tool-link" href="#">toptal.com/developers</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Contra</div>
+          <div class="tool-why">Senior-first, no bidding wars. Set your rate, clients come to you. Zero platform fees.</div>
+          <a class="tool-link" href="#">contra.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">PeoplePerHour</div>
+          <div class="tool-why">Strong UK market. Good for Umbraco + .NET work. List fixed-price service offerings.</div>
+          <a class="tool-link" href="#">peopleperhour.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Gun.io</div>
+          <div class="tool-why">Curated senior engineers only. No junior competition. Pays in USD — favourable exchange rate.</div>
+          <a class="tool-link" href="#">gun.io</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">LinkedIn</div>
+          <div class="tool-why">Your warmest lead source. Past colleagues, clients, and recruiters already know you. Post weekly.</div>
+          <a class="tool-link" href="#">linkedin.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">MentorCruise</div>
+          <div class="tool-why">Offer 1-on-1 mentoring to junior/mid .NET devs. £100–200/mo per mentee, near-zero effort.</div>
+          <a class="tool-link" href="#">mentorcruise.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tool-cat-title">Paid Writing <span>Technical Content Platforms</span></div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">LogRocket Blog</div>
+          <div class="tool-why">Pays £300–500 per accepted article. .NET, Azure, React topics all in demand. Apply with a draft.</div>
+          <a class="tool-link" href="#">blog.logrocket.com/write-for-us</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Telerik Blog</div>
+          <div class="tool-why">Pays for .NET and Blazor content. Great fit for your C# expertise.</div>
+          <a class="tool-link" href="#">telerik.com/blogs</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Auth0 Blog</div>
+          <div class="tool-why">Pays for identity & auth tutorials. .NET + Azure AD integration articles are a perfect match.</div>
+          <a class="tool-link" href="#">auth0.com/blog</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">C# Corner</div>
+          <div class="tool-why">Large .NET community. Paid contributor programme. Good visibility for your consultancy.</div>
+          <a class="tool-link" href="#">c-sharpcorner.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tool-cat-title">Business Operations <span>Run Your Freelance Like a Business</span></div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">FreeAgent</div>
+          <div class="tool-why">UK-focused accounting. Invoicing, expenses, VAT, Self Assessment. Free with NatWest/RBS business account.</div>
+          <a class="tool-link" href="#">freeagent.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Calendly</div>
+          <div class="tool-why">Book discovery calls and consulting sessions automatically. Eliminates back-and-forth email.</div>
+          <a class="tool-link" href="#">calendly.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Notion</div>
+          <div class="tool-why">CRM, project tracker, client notes, content calendar — all in one. Free tier is plenty.</div>
+          <a class="tool-link" href="#">notion.so</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Stripe</div>
+          <div class="tool-why">Accept card payments from clients globally. Essential for retainers and consulting fees.</div>
+          <a class="tool-link" href="#">stripe.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Starling Business</div>
+          <div class="tool-why">Free UK business bank account. Separate your side income immediately. Integrates with FreeAgent.</div>
+          <a class="tool-link" href="#">starlingbank.com/business</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">DocuSign / PandaDoc</div>
+          <div class="tool-why">Always use a contract. Protects you. Adds professionalism. Non-negotiable for any project over £500.</div>
+          <a class="tool-link" href="#">pandadoc.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tool-cat-title">Your Build Stack <span>What to Deploy Your Work On</span></div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">Vercel</div>
+          <div class="tool-why">Host all Next.js client sites here. Zero ops. Free hobby tier, £20/mo pro covers many client sites.</div>
+          <a class="tool-link" href="#">vercel.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Azure App Service</div>
+          <div class="tool-why">Your native ground for .NET APIs and Umbraco. You already know this — use it to deliver fast.</div>
+          <a class="tool-link" href="#">azure.microsoft.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">GitHub</div>
+          <div class="tool-why">Portfolio, version control, CI/CD via Actions. Public repos showcase your work to potential clients.</div>
+          <a class="tool-link" href="#">github.com</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Umbraco Cloud</div>
+          <div class="tool-why">Managed Umbraco hosting for client sites. Charge client for hosting, you manage it — recurring revenue.</div>
+          <a class="tool-link" href="#">umbraco.com/cloud</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ===================== CHECKLIST ===================== -->
+<div id="tab-checklist" class="section">
+<div class="wrap">
+  <div class="sh">
+    <h2>Action Checklist</h2>
+    <p>Click each item as you complete it — your launch roadmap</p>
+  </div>
+
+  <div class="checklist">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Register with HMRC Self Assessment</strong>Required if side income exceeds £1,000/yr. Takes 10 mins at gov.uk.</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Open a Starling or Monzo Business account</strong>Separate your side income from personal finances immediately.</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Set up 3 savings pots</strong>"Tesla Fund" (35%), "Debt Nuke" (40%), "Tax Reserve" (20%).</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Build and deploy your portfolio site</strong>Next.js on Vercel. 3 projects, your stack, your rate, Calendly embedded.</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Update LinkedIn with "Available for Freelance"</strong>Add all tech keywords. Set Open to Work (recruiter-visible mode).</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Apply to Toptal</strong>Takes 2–3 weeks to complete vetting. Start now so you're approved sooner.</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Create Contra and PeoplePerHour profiles</strong>Set rate at £85/hr. Write 3 service descriptions. Add portfolio links.</div>
+      <div class="check-tag week1">Week 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Post your "Available for freelance" LinkedIn post</strong>Announce to your network. Past colleagues are your warmest potential clients.</div>
+      <div class="check-tag week2">Week 2</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Identify 10 local businesses with poor websites</strong>Google your town + trades/services. Screenshot bad sites. Start your outreach list.</div>
+      <div class="check-tag week2">Week 2</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Send 10 personalised outreach emails to local businesses</strong>Include screenshot, 3 improvements, and a free audit call offer.</div>
+      <div class="check-tag week2">Week 2</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Pitch your first technical article</strong>Pick a topic you know cold. Submit to LogRocket or Telerik Blog.</div>
+      <div class="check-tag week2">Week 2</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Set up FreeAgent or Wave for accounting</strong>Log every piece of income and business expense from day one.</div>
+      <div class="check-tag week2">Week 2</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Create your Umbraco templated starter project</strong>Reusable boilerplate that cuts delivery time from 30hrs to 10hrs per site.</div>
+      <div class="check-tag month1">Month 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Land and deliver first local business website</strong>First real project under your belt. Get a written testimonial on completion.</div>
+      <div class="check-tag month1">Month 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Book first Azure/AWS consulting call via Calendly</strong>Post your consulting offer on LinkedIn. DM 10 startup founders or CTOs.</div>
+      <div class="check-tag month1">Month 1</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Pitch first maintenance retainer to completed client</strong>After website delivery: offer £300/mo for ongoing updates + support.</div>
+      <div class="check-tag ongoing">Ongoing</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Set up MentorCruise profile</strong>Offer 1-on-1 mentoring sessions for junior .NET devs at £150/hr.</div>
+      <div class="check-tag ongoing">Ongoing</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Validate one Micro-SaaS idea with a landing page</strong>Build waitlist page in one evening. Share in dev communities. Measure interest.</div>
+      <div class="check-tag ongoing">Ongoing</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>Publish first Udemy course outline</strong>Topic: Umbraco for .NET Developers. Record 3 intro videos. Validate before full build.</div>
+      <div class="check-tag ongoing">Ongoing</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text"><strong>🎉 Debt Cleared — Redirect All Allocation to Tesla Fund</strong>Celebrate this milestone. Full 80% of net income now targets the Model Y.</div>
+      <div class="check-tag ongoing">~Month 4</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  function showTab(id, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    el.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.nav-tabs').offsetTop - 10, behavior: 'smooth' });
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    const done = document.querySelectorAll('.check-item.done').length;
+    const total = document.querySelectorAll('.check-item').length;
+    // Could add progress indicator here
+  }
+</script>
+
+</body>
+</html>
