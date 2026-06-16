@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gallery Card — Restaurant (1280×769)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1b1b22; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; font-family: 'Inter', sans-serif; }
+
+  /* === Screenshot exactly this 1280×769 box === */
+  .card { width: 1280px; height: 769px; overflow: hidden; background: #faf6f0; position: relative; display: flex; flex-direction: column; }
+
+  /* browser chrome */
+  .chrome { height: 46px; background: #efe7dc; border-bottom: 1px solid rgba(28,20,16,0.12); display: flex; align-items: center; padding: 0 18px; gap: 8px; flex-shrink: 0; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .urlbar { margin-left: 14px; background: #fff; border: 1px solid rgba(28,20,16,0.12); border-radius: 7px; padding: 7px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8a7d6f; min-width: 360px; }
+  .badge { margin-left: auto; background: #1c1410; color: #c8943f; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 100px; }
+
+  /* hero */
+  .hero { height: 470px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+    background-color: #2a1d14;
+    background-image: linear-gradient(rgba(20,14,10,0.55), rgba(20,14,10,0.68)), url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80");
+    background-size: cover; background-position: center; }
+  .hero .eyebrow { text-transform: uppercase; letter-spacing: 5px; font-size: 14px; opacity: 0.92; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 92px; line-height: 1; letter-spacing: -0.5px; margin-bottom: 30px; }
+  .hero .btn { display: inline-block; background: #c8943f; color: #fff; padding: 16px 40px; border-radius: 4px; font-weight: 600; font-size: 16px; }
+
+  /* menu peek */
+  .menu { flex: 1; background: #fff; padding: 30px 90px 0; }
+  .menu .m-eyebrow { text-align: center; text-transform: uppercase; letter-spacing: 3px; font-size: 12px; color: #c8943f; font-weight: 600; margin-bottom: 8px; }
+  .menu .m-title { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 34px; color: #1c1410; margin-bottom: 22px; }
+  .m-row { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 9px 0; border-bottom: 1px solid rgba(28,20,16,0.08); max-width: 820px; margin: 0 auto; }
+  .m-row .n { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #1c1410; }
+  .m-row .d { color: #8a7d6f; font-size: 14px; flex: 1; padding: 0 18px; }
+  .m-row .p { color: #c8943f; font-weight: 700; font-size: 17px; }
+</style>
+</head>
+<body>
+  <!-- Screenshot ONLY the .card box (1280×769). DevTools → select <div class="card"> → "Capture node screenshot" gives a pixel-perfect crop. -->
+  <div class="card">
+    <div class="chrome">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="urlbar">thecoppertable.vercel.app</span>
+      <span class="badge">★ Editable CMS · Live demo</span>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Fine dining, reimagined</div>
+        <h1>The Copper Table</h1>
+        <span class="btn">View Menu</span>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="m-eyebrow">Our Menu</div>
+      <div class="m-title">Made fresh, every day</div>
+      <div class="m-row"><span class="n">Seared Scallops</span><span class="d">Pea purée, crispy pancetta, lemon oil</span><span class="p">£14</span></div>
+      <div class="m-row"><span class="n">Dry-Aged Ribeye</span><span class="d">Triple-cooked chips, peppercorn sauce</span><span class="p">£32</span></div>
+      <div class="m-row"><span class="n">Dark Chocolate Fondant</span><span class="d">Salted caramel ice cream</span><span class="p">£9</span></div>
+    </div>
+  </div>
+</body>
+</html>
