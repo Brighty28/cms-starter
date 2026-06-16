@@ -115,3 +115,37 @@ edit to taste, based on your stack):
 > Tip: Fiverr also has separate **Skills** and **Education/Certification**
 > sections — add your key skills (C#, .NET, Azure, AWS, Next.js, Umbraco, Sanity,
 > SQL, CI/CD) and any certifications there too.
+
+---
+
+## Capturing the mandatory portfolio image (real live sites)
+
+Each portfolio project needs an uploaded image. These are **real, live sites**, so
+take a real screenshot of each — more authentic than a mockup, and quick. Aim for
+a clean shot of the homepage hero at **1280 × 769** (matches the rest of the gallery).
+
+### Easiest — Chrome/Edge DevTools (pixel-perfect, no cropping)
+1. Open the site (e.g. `https://tpayneandco.uk/`).
+2. Press `F12`, then toggle the device toolbar (`Ctrl/Cmd + Shift + M`).
+3. Set the width to **1280** and zoom **100%** ("Responsive" mode).
+4. Open the command menu (`Ctrl/Cmd + Shift + P`), type **screenshot**, and choose:
+   - **"Capture screenshot"** → just the hero/visible area (best for a clean thumbnail), or
+   - **"Capture full size screenshot"** → the entire page top-to-bottom.
+5. Save the PNG and upload it to that portfolio project.
+
+### Simplest — built-in browser capture (no DevTools)
+- **Firefox:** right-click the page → **Take Screenshot** → "Save visible" or "Save full page".
+- **Edge:** `Ctrl + Shift + S` → Web Capture → "Capture full page".
+
+### Fallback — OS screenshot + crop
+- **Windows:** `Win + Shift + S`, drag over the hero, paste into Paint, crop to a ~1280×769 area.
+- **Mac:** `Cmd + Shift + 4`, drag over the hero area.
+
+**Tips for a professional shot:** scroll to the very top so the header/hero shows;
+hide any cookie banner first (accept/dismiss it); use an incognito window so no
+toolbars or extensions appear; capture at desktop width (1280–1440).
+
+> Prefer the branded "browser-frame card" look from the template demos instead?
+> I can build those for TPayne & Co and Elm Lodge Kennels (I have their details),
+> but they'd be stylised recreations, not the real sites — only use that if you
+> can't screenshot the live site. (Bolt would need its details first.)
